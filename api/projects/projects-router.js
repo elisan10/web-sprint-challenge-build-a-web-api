@@ -99,4 +99,16 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// [GET] /api/projects/:id/actions
+
+router.get("/:id/actions", (req, res) => {
+  Project.getProjectActions(req.params.id)
+    .then((actions) => {
+      res.json(actions);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message });
+    });
+});
+
 module.exports = router;

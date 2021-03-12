@@ -19,4 +19,24 @@ router.get("/", (req, res) => {
     });
 });
 
+//[GET] /api/projects/:id
+
+router.get("/:id", (req, res) => {
+  const id = req.params.id;
+
+  Project.get(id)
+    .then((projects) => {
+      if (!projects) {
+        res
+          .status(404)
+          .json({ message: "The user with the specified id does not exist" });
+      } else {
+        res.json(projects);
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message });
+    });
+});
+
 module.exports = router;

@@ -59,4 +59,29 @@ router.post("/", (req, res) => {
   }
 });
 
+// [PUT] /api/projects/:id
+
+router.put("/:id", async (req, res) => {
+  const id = req.params.id;
+  const changes = req.body;
+  try {
+    if (!changes.name || !changes.description) {
+      res
+        .status(400)
+        .json({ message: "Please provide name and description for project" });
+    } else {
+      const updateProject = await Project.update(id, changes);
+      if (!updateProject) {
+        res
+          .status(404)
+          .json({ message: `Project with the id of ${id} does not exist` });
+      } else {
+        res.json(updateProject);
+      }
+    }
+  } catch {
+    res.status(500).json({ message: "" });
+  }
+});
+
 module.exports = router;

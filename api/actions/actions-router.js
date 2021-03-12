@@ -74,13 +74,28 @@ router.put("/:id", async (req, res) => {
       if (!updateAction) {
         res
           .status(404)
-          .json({ message: `action with the id of ${id} does not exist` });
+          .json({ message: `Action with the id of ${id} does not exist` });
       } else {
         res.json(updateAction);
       }
     }
   } catch {
-    res.status(500).json({ message: "" });
+    res.status(500).json({ message: "Updating changes was not successful" });
+  }
+});
+
+// [DELETE] /api/actions/:id
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const removed = await Action.remove(req.params.id);
+    if (!removed) {
+      res.status(404).json({ message: "Specified id does not exist" });
+    } else {
+      res.json(removed);
+    }
+  } catch {
+    res.status(500).json({ message: "Delete was not successful" });
   }
 });
 

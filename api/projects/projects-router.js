@@ -84,4 +84,19 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// [DELETE] /api/projects/:id
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const removed = await Project.remove(req.params.id);
+    if (!removed) {
+      res.status(404).json({ message: "Specified id does not exist" });
+    } else {
+      res.json(removed);
+    }
+  } catch {
+    res.status(500).json({ message: "Delete was not successful" });
+  }
+});
+
 module.exports = router;

@@ -39,4 +39,24 @@ router.get("/:id", (req, res) => {
     });
 });
 
+// [POST] /api/actions
+
+router.post("/", (req, res) => {
+  const newAction = req.body;
+
+  if (!newAction.description || !newAction.notes) {
+    res
+      .status(400)
+      .json({ message: "Please provide name and description for new action" });
+  } else {
+    Action.insert(newAction)
+      .then((action) => {
+        res.json(action);
+      })
+      .catch((error) => {
+        res.status(500).json({ message: error.message });
+      });
+  }
+});
+
 module.exports = router;

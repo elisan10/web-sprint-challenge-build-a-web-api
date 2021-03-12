@@ -59,4 +59,29 @@ router.post("/", (req, res) => {
   }
 });
 
+// [PUT] /api/actions/:id
+
+router.put("/:id", async (req, res) => {
+  const id = req.params.id;
+  const changes = req.body;
+  try {
+    if (!changes.description || !changes.notes) {
+      res
+        .status(400)
+        .json({ message: "Please provide name and description for action" });
+    } else {
+      const updateAction = await Action.update(id, changes);
+      if (!updateAction) {
+        res
+          .status(404)
+          .json({ message: `action with the id of ${id} does not exist` });
+      } else {
+        res.json(updateAction);
+      }
+    }
+  } catch {
+    res.status(500).json({ message: "" });
+  }
+});
+
 module.exports = router;
